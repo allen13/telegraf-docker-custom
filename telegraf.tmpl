@@ -1,0 +1,30 @@
+[agent]
+  interval = "{{ .Env.TELEGRAF_INTERVAL }}"
+  flush_interval = "{{ .Env.TELEGRAF_INTERVAL_FLUSH }}"
+  flush_jitter = "{{ .Env.TELEGRAF_INTERVAL_JITTER }}"
+  debug = false
+  quiet = true
+
+[[outputs.influxdb]]
+  urls = ["http://{{ .Env.INFLUXDB_HOST }}:8086"]
+  database = "{{ .Env.TELEGRAF_DB }}"
+  username = "{{ .Env.TELEGRAF_USER }}"
+  password = "{{ .Env.TELEGRAF_PASSWORD }}"
+
+[[inputs.system]]
+
+[[inputs.cpu]]
+ percpu = false
+ totalcpu = true
+ fielddrop = ["time_*"]
+
+[[inputs.disk]]
+  ignore_fs = ["tmpfs", "devtmpfs"]
+
+[[inputs.diskio]]
+
+[[inputs.mem]]
+
+[[inputs.docker]]
+endpoint = "unix:///var/run/docker.sock"
+timeout = "5s"
